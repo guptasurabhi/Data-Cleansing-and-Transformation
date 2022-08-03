@@ -1,0 +1,271 @@
+GOOGLE COLABATORY
+
+
+from google.colab import files
+uploaded = files.upload()
+###  choose files=train.csv
+train.csv(text/csv) - 99459648 bytes, last modified: 8/2/2022 - 100% done
+Saving train.csv to train.csv
+
+###IMPORTING LIBRARIES
+import pandas as pd
+import matplotlib .pyplot as plt
+import seaborn as sns
+
+
+df=pd.read_csv(r"/content/train.csv")
+df.info()
+
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 929615 entries, 0 to 929614
+Data columns (total 24 columns):
+ #   Column                 Non-Null Count   Dtype  
+---  ------                 --------------   -----  
+ 0   fecha_dato             929615 non-null  object 
+ 1   ncodpers               929615 non-null  int64  
+ 2   ind_empleado           929615 non-null  object 
+ 3   pais_residencia        929615 non-null  object 
+ 4   sexo                   929610 non-null  object 
+ 5   age                    929615 non-null  int64  
+ 6   fecha_alta             929615 non-null  object 
+ 7   ind_nuevo              929615 non-null  int64  
+ 8   antiguedad             929615 non-null  int64  
+ 9   indrel                 929615 non-null  int64  
+ 10  ult_fec_cli_1t         1683 non-null    object 
+ 11  indrel_1mes            929592 non-null  float64
+ 12  tiprel_1mes            929592 non-null  object 
+ 13  indresi                929615 non-null  object 
+ 14  indext                 929615 non-null  object 
+ 15  conyuemp               104 non-null     object 
+ 16  canal_entrada          927534 non-null  object 
+ 17  indfall                929615 non-null  object 
+ 18  tipodom                929615 non-null  int64  
+ 19  cod_prov               925619 non-null  float64
+ 20  nomprov                925619 non-null  object 
+ 21  ind_actividad_cliente  929615 non-null  int64  
+ 22  renta                  929615 non-null  object 
+ 23  segmento               927367 non-null  object 
+dtypes: float64(2), int64(7), object(15)
+memory usage: 170.2+ MB
+
+###LOAD ZIP DATA
+df.shape
+(929615, 24)
+
+df.head()
+	fecha_dato	ncodpers	ind_empleado	pais_residencia	sexo	age	fecha_alta	ind_nuevo	antiguedad	indrel	...	indext	conyuemp	canal_entrada	indfall	tipodom	cod_prov	nomprov	ind_actividad_cliente	renta	segmento
+0	28-06-2016	15889	F	ES	V	56	16-01-1995	0	256	1	...	N	N	KAT	N	1	28.0	MADRID	1	326124.9	01 - TOP
+1	28-06-2016	1170544	N	ES	H	36	28-08-2013	0	34	1	...	N	NaN	KAT	N	1	3.0	ALICANTE	0	NA	02 - PARTICULARES
+2	28-06-2016	1170545	N	ES	V	22	28-08-2013	0	34	1	...	N	NaN	KHE	N	1	15.0	CORUÑA, A	1	NA	03 - UNIVERSITARIO
+3	28-06-2016	1170547	N	ES	H	22	28-08-2013	0	34	1	...	N	NaN	KHE	N	1	8.0	BARCELONA	0	148402.98	03 - UNIVERSITARIO
+4	28-06-2016	1170548	N	ES	H	22	28-08-2013	0	34	1	...	N	NaN	KHE	N	1	7.0	BALEARS, ILLES	0	106885.8	03 - UNIVERSITARIO
+5 rows × 24 columns
+
+
+df.columns
+Index(['fecha_dato', 'ncodpers', 'ind_empleado', 'pais_residencia', 'sexo',
+       'age', 'fecha_alta', 'ind_nuevo', 'antiguedad', 'indrel',
+       'ult_fec_cli_1t', 'indrel_1mes', 'tiprel_1mes', 'indresi', 'indext',
+       'conyuemp', 'canal_entrada', 'indfall', 'tipodom', 'cod_prov',
+       'nomprov', 'ind_actividad_cliente', 'renta', 'segmento'],
+      dtype='object')
+      
+ ######CONVERT COLUMN NAMES INTO UPPER
+ df_new=df.columns.str.upper()
+ df_new
+ 
+ Index(['FECHA_DATO', 'NCODPERS', 'IND_EMPLEADO', 'PAIS_RESIDENCIA', 'SEXO',
+       'AGE', 'FECHA_ALTA', 'IND_NUEVO', 'ANTIGUEDAD', 'INDREL',
+       'ULT_FEC_CLI_1T', 'INDREL_1MES', 'TIPREL_1MES', 'INDRESI', 'INDEXT',
+       'CONYUEMP', 'CANAL_ENTRADA', 'INDFALL', 'TIPODOM', 'COD_PROV',
+       'NOMPROV', 'IND_ACTIVIDAD_CLIENTE', 'RENTA', 'SEGMENTO'],
+      dtype='object')
+ 
+   ####CHECK FOR DUPLICATES
+   df.isnull().any().any()
+   True
+   df.isnull().any()
+   fecha_dato               False
+ncodpers                 False
+ind_empleado             False
+pais_residencia          False
+sexo                      True
+age                      False
+fecha_alta               False
+ind_nuevo                False
+antiguedad               False
+indrel                   False
+ult_fec_cli_1t            True
+indrel_1mes               True
+tiprel_1mes               True
+indresi                  False
+indext                   False
+conyuemp                  True
+canal_entrada             True
+indfall                  False
+tipodom                  False
+cod_prov                  True
+nomprov                   True
+ind_actividad_cliente    False
+renta                    False
+segmento                  True
+dtype: bool
+
+df.isnull().sum()
+fecha_dato                    0
+ncodpers                      0
+ind_empleado                  0
+pais_residencia               0
+sexo                          5
+age                           0
+fecha_alta                    0
+ind_nuevo                     0
+antiguedad                    0
+indrel                        0
+ult_fec_cli_1t           927932
+indrel_1mes                  23
+tiprel_1mes                  23
+indresi                       0
+indext                        0
+conyuemp                 929511
+canal_entrada              2081
+indfall                       0
+tipodom                       0
+cod_prov                   3996
+nomprov                    3996
+ind_actividad_cliente         0
+renta                         0
+segmento                   2248
+dtype: int64
+
+#####REPLACE Nan WITH 0
+df_zero=df.fillna(0)
+df_zero
+
+	fecha_dato	ncodpers	ind_empleado	pais_residencia	sexo	age	fecha_alta	ind_nuevo	antiguedad	indrel	...	indext	conyuemp	canal_entrada	indfall	tipodom	cod_prov	nomprov	ind_actividad_cliente	renta	segmento
+0	28-06-2016	15889	F	ES	V	56	16-01-1995	0	256	1	...	N	N	KAT	N	1	28.0	MADRID	1	326124.9	01 - TOP
+1	28-06-2016	1170544	N	ES	H	36	28-08-2013	0	34	1	...	N	0	KAT	N	1	3.0	ALICANTE	0	NA	02 - PARTICULARES
+2	28-06-2016	1170545	N	ES	V	22	28-08-2013	0	34	1	...	N	0	KHE	N	1	15.0	CORUÑA, A	1	NA	03 - UNIVERSITARIO
+3	28-06-2016	1170547	N	ES	H	22	28-08-2013	0	34	1	...	N	0	KHE	N	1	8.0	BARCELONA	0	148402.98	03 - UNIVERSITARIO
+4	28-06-2016	1170548	N	ES	H	22	28-08-2013	0	34	1	...	N	0	KHE	N	1	7.0	BALEARS, ILLES	0	106885.8	03 - UNIVERSITARIO
+...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...
+929610	28-06-2016	660237	N	ES	V	55	21-04-1999	0	206	1	...	N	0	KAT	N	1	28.0	MADRID	1	128643.57	01 - TOP
+929611	28-06-2016	660238	N	ES	V	30	29-11-2006	0	115	1	...	N	0	KFC	N	1	26.0	RIOJA, LA	0	NA	02 - PARTICULARES
+929612	28-06-2016	660240	N	ES	V	52	29-11-2006	0	115	1	...	N	0	KBZ	N	1	33.0	ASTURIAS	1	72765.27	02 - PARTICULARES
+929613	28-06-2016	660243	N	ES	V	32	29-11-2006	0	115	1	...	N	0	KFC	N	1	33.0	ASTURIAS	0	147488.88	02 - PARTICULARES
+929614	28-06-2016	660248	N	ES	V	92	29-11-2006	0	115	1	...	N	0	KAT	N	1	45.0	TOLEDO	0	NA	02 - PARTICULARES
+929615 rows × 24 columns
+
+df.describe()
+	ncodpers	age	ind_nuevo	antiguedad	indrel	indrel_1mes	tipodom	cod_prov	ind_actividad_cliente
+count	9.296150e+05	929615.000000	929615.000000	929615.000000	929615.000000	929592.000000	929615.0	925619.000000	929615.000000
+mean	8.794566e+05	40.249821	0.027849	77.728413	1.177422	1.000058	1.0	26.546150	0.425272
+std	4.481569e+05	17.185119	0.164541	1797.824518	4.166039	0.010779	0.0	12.836614	0.494384
+min	1.588900e+04	2.000000	0.000000	-999999.000000	1.000000	1.000000	1.0	1.000000	0.000000
+25%	4.833615e+05	25.000000	0.000000	23.000000	1.000000	1.000000	1.0	15.000000	0.000000
+50%	9.664250e+05	39.000000	0.000000	55.000000	1.000000	1.000000	1.0	28.000000	0.000000
+75%	1.264316e+06	51.000000	0.000000	136.000000	1.000000	1.000000	1.0	35.000000	1.000000
+max	1.553689e+06	164.000000	1.000000	257.000000	99.000000	3.000000	1.0	52.000000	1.000000
+
+####convert data types
+df.dtypes
+fecha_dato                object
+ncodpers                   int64
+ind_empleado              object
+pais_residencia           object
+sexo                      object
+age                        int64
+fecha_alta                object
+ind_nuevo                  int64
+antiguedad                 int64
+indrel                     int64
+ult_fec_cli_1t            object
+indrel_1mes              float64
+tiprel_1mes               object
+indresi                   object
+indext                    object
+conyuemp                  object
+canal_entrada             object
+indfall                   object
+tipodom                    int64
+cod_prov                 float64
+nomprov                   object
+ind_actividad_cliente      int64
+renta                     object
+segmento                  object
+dtype: object
+
+#####convert object dtypes in category
+df_category=df.astype({"fecha_dato":'category',"ind_empleado":'category',"pais_residencia":'category',"sexo":'category',"fecha_alta":'category',"ult_fec_cli_1t":'category',"tiprel_1mes":'category',"indresi":'category',"indext":'category',"conyuemp":'category',"canal_entrada":'category',"indfall":'category',"nomprov":'category',"renta":'category',"segmento":'category'})
+df_category.dtypes
+fecha_dato               category
+ncodpers                    int64
+ind_empleado             category
+pais_residencia          category
+sexo                     category
+age                         int64
+fecha_alta               category
+ind_nuevo                   int64
+antiguedad                  int64
+indrel                      int64
+ult_fec_cli_1t           category
+indrel_1mes               float64
+tiprel_1mes              category
+indresi                  category
+indext                   category
+conyuemp                 category
+canal_entrada            category
+indfall                  category
+tipodom                     int64
+cod_prov                  float64
+nomprov                  category
+ind_actividad_cliente       int64
+renta                    category
+segmento                 category
+dtype: object
+[22]
+0s
+
+###############convert int into float
+df_float=df.astype({"ncodpers":'float',"ind_nuevo":'float',"antiguedad":'float',"indrel":'float',"tipodom":'float',"ind_actividad_cliente":'float'})
+df_float.dtypes
+fecha_dato                object
+ncodpers                 float64
+ind_empleado              object
+pais_residencia           object
+sexo                      object
+age                        int64
+fecha_alta                object
+ind_nuevo                float64
+antiguedad               float64
+indrel                   float64
+ult_fec_cli_1t            object
+indrel_1mes              float64
+tiprel_1mes               object
+indresi                   object
+indext                    object
+conyuemp                  object
+canal_entrada             object
+indfall                   object
+tipodom                  float64
+cod_prov                 float64
+nomprov                   object
+ind_actividad_cliente    float64
+renta                     object
+segmento                  object
+dtype: object
+
+import statistics
+
+#####Plot the percentiles using matplotlib
+
+group=df.groupby('ind_nuevo')
+group
+<pandas.core.groupby.generic.DataFrameGroupBy object at 0x7f609dd614d0>
+
+####Exploratory data analysis with seaborn
+sns.barplot(x= 'age',y= 'sexo' ,data= df_zero)
+plt.show()
+
+sns.barplot(x= 'age', y= 'ind_nuevo',data=df_zero)
+plt.show()
